@@ -21,4 +21,9 @@ public class PageController {
         return "index";
     }
 
+    @RequestMapping("/regist.html")
+    public String regist(){
+        return "regist";
+    }
+
 }

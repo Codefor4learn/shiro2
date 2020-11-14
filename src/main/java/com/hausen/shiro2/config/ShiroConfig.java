@@ -1,6 +1,7 @@
 package com.hausen.shiro2.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +19,28 @@ public class ShiroConfig {
         return new ShiroDialect();
     }
 
+    // 加密
+    @Bean
+    public HashedCredentialsMatcher getHashedCredentialsMatcher(){
+
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+
+        //设置加密方式
+        matcher.setHashAlgorithmName("md5");
+        //设置加密次数
+        matcher.setHashIterations(1);
+
+        return matcher;
+    }
+
     //Realm
     @Bean
-    public MyRealm getMyRealm(){
+    public MyRealm getMyRealm(HashedCredentialsMatcher matcher){
 
-        return  new MyRealm();
+        MyRealm myRealm = new MyRealm();
+        myRealm.setCredentialsMatcher(matcher);
+
+        return myRealm;
     }
 
     //DefaultWebSecurityManager
@@ -48,12 +66,13 @@ public class ShiroConfig {
         filterMap.put("/","anon");
         filterMap.put("/login.html","anon");
         //filterMap.put("/index.html","anon");
-        filterMap.put("register.html","anon");
+        filterMap.put("/regist.html","anon");
         filterMap.put("/user/login","anon");
-        filterMap.put("/user/register.html","anon");
+        filterMap.put("/user/regist","anon");
         filterMap.put("/static/**","anon");
         filterMap.put("/**","authc");
 
+        filterMap.put("/logout","logout");
         filter.setFilterChainDefinitionMap(filterMap);
 
         filter.setLoginUrl("/");

@@ -12,6 +12,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
 import java.util.Set;
@@ -65,7 +66,11 @@ public class MyRealm extends AuthorizingRealm {
             return null;
         }
 
-        AuthenticationInfo info = new SimpleAuthenticationInfo(username,user.getPassword(),getNames());
+        // 不加盐
+        //AuthenticationInfo info = new SimpleAuthenticationInfo(username,user.getPassword(),getNames());
+
+        // 加盐
+        AuthenticationInfo info = new SimpleAuthenticationInfo(username,user.getPassword(), ByteSource.Util.bytes(user.getPasswordSalt()),getNames());
 
         return info;
     }

@@ -16,4 +16,9 @@
         select * from tb_users
         where username = #{username}
     </select>
+
+    <insert id="addUser" parameterType="User">
+        insert into tb_users(username,password,password_salt)
+        values (#{userName},#{password},#{passwordSalt})
+    </insert>
 </mapper>
