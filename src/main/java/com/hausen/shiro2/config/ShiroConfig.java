@@ -72,12 +72,15 @@ public class ShiroConfig {
         filterMap.put("/static/**","anon");
         filterMap.put("/**","authc");
 
+        filterMap.put("/c_save.html","perms[sys:c:save]");
+
         filterMap.put("/logout","logout");
         filter.setFilterChainDefinitionMap(filterMap);
 
+        // 设置登录页面
         filter.setLoginUrl("/");
-        // 设置未授权提示url
-        filter.setUnauthorizedUrl("/login.html");
+        // 设置未授权访问页面
+        filter.setUnauthorizedUrl("/lesspermission.html");
         return filter;
     }
 }

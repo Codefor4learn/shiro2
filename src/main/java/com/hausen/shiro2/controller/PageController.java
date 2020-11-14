@@ -26,4 +26,14 @@ public class PageController {
         return "regist";
     }
 
+    @RequestMapping("/c_save.html")
+    public String c_save(){
+        return "c_save";
+    }
+
+    @RequestMapping("/lesspermission.html")
+    public String lesspermission(){
+        return "lesspermission";
+    }
+
 }
