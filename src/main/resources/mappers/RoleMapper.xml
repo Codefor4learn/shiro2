@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mysbatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hausen.shiro2.dao.RoleDao">
+    <select id="queryRolesByUsername" resultSets="java.util.Set" resultType="String">
+        select tb_roles.rolename from tb_users
+        INNER JOIN tb_urs on tb_users.user_id = tb_urs.uid
+        INNER JOIN tb_roles on tb_urs.rid = tb_roles.role_id
+        where username = #{username}
+    </select>
+</mapper>
