@@ -44,6 +44,7 @@ public class MyRealm extends AuthorizingRealm {
 
         // 查询权限列表
         Set<String> ps = permissionsDao.queryPermissionsByUsername(username);
+        System.out.println("----------------查询角色信息");
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setRoles(roleNames);

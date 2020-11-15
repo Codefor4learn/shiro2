@@ -2,9 +2,11 @@ package com.hausen.shiro2.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,25 @@ public class ShiroConfig {
     @Bean
     public ShiroDialect getShiroDialect(){
         return new ShiroDialect();
+    }
+
+    // Session管理器
+    @Bean
+    public DefaultWebSessionManager getDefaultWebSessionManager(){
+
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        System.out.println(sessionManager.getGlobalSessionTimeout()); //默认1800000 30*60*1000
+        sessionManager.setGlobalSessionTimeout(15*1000); // 默认毫秒
+        return sessionManager;
+    }
+
+    // 缓存管理器
+    @Bean
+    public EhCacheManager getEhCacheManager(){
+
+        EhCacheManager cacheManager = new EhCacheManager();
+        //cacheManager.setCacheManagerConfigFile("classpath:ehcache.xml");
+        return cacheManager;
     }
 
     // 让 shrio注解生效
@@ -69,6 +90,8 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
         securityManager.setRealm(myRealm);
+        securityManager.setCacheManager(getEhCacheManager());//缓存管理器
+        securityManager.setSessionManager(getDefaultWebSessionManager());//Session管理器
 
         return securityManager;
     }

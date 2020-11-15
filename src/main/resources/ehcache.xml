@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" dynamicConfig="false">
+
+
+    <diskStore path="C:\TEMP"/>
+
+    <cache name="user" timeToLiveSeconds="300" maxEntriesLocalHeap="1000"/>
+
+    <defaultCache name="defaultCache"
+                  maxElementsMemory="10000"
+                  eternal="false"
+                  timeToIdleSeconds="120"
+                  timeToLiveSeconds="120"
+                  overflowToDisk="false"
+                  maxElementsOnDisk="100000"
+                  diskPersistent="false"
+                  diskExpiryThreadIntervalSeconds="120"
+                  memoryStoreEvictionPolicy="LUR"/>
+                <!--缓存淘汰策略
+                    LRU 最近最少使用
+                    FIFO 先进先出
+                    LFU 最少使用
+                -->
+
+
+</ehcache>
