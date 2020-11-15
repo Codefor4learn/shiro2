@@ -17,11 +17,11 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public void checkLogin(String userName, String userPwd) throws Exception{
+    public void checkLogin(String userName, String userPwd,boolean rememberMe) throws Exception{
 
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(userName,userPwd);
-
+        token.setRememberMe(rememberMe);
         subject.login(token);
     }
 

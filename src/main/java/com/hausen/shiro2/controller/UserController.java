@@ -17,10 +17,10 @@ public class UserController {
     UserService userService;
 
     @RequestMapping("/login")
-    public String login(String userName,String userPwd){
+    public String login(String userName,String userPwd,boolean rememberMe){
 
         try {
-            userService.checkLogin(userName,userPwd);
+            userService.checkLogin(userName,userPwd,rememberMe);
             System.out.println("登录成功");
             return "index";
         } catch (Exception e) {

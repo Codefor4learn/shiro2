@@ -3,9 +3,12 @@ package com.hausen.shiro2.config;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +24,18 @@ public class ShiroConfig {
     @Bean
     public ShiroDialect getShiroDialect(){
         return new ShiroDialect();
+    }
+
+    // 记住我管理器
+    @Bean
+    public CookieRememberMeManager getCookieRememberMeManager(){
+
+        CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        simpleCookie.setMaxAge(30*24*60*60);
+        rememberMeManager.setCookie(simpleCookie);
+
+        return  rememberMeManager;
     }
 
     // Session管理器
@@ -83,7 +98,7 @@ public class ShiroConfig {
         return myRealm;
     }
 
-    //DefaultWebSecurityManager
+    //DefaultWebSecurityManager 安全管理器
     @Bean
     public DefaultWebSecurityManager getDefaultWebSecurityManager(MyRealm myRealm){
 
@@ -92,6 +107,7 @@ public class ShiroConfig {
         securityManager.setRealm(myRealm);
         securityManager.setCacheManager(getEhCacheManager());//缓存管理器
         securityManager.setSessionManager(getDefaultWebSessionManager());//Session管理器
+        securityManager.setRememberMeManager(getCookieRememberMeManager());//设置Remeberme管理器
 
         return securityManager;
     }
@@ -104,10 +120,15 @@ public class ShiroConfig {
 
         filter.setSecurityManager(securityManager);
 
+        // anon 未认证可访问
+        // user 记住我可访问(已认真也可以访问)
+        // authc 认证访问
+        // perms 具有指定权限访问
+        // logout 指定退出的url
         Map<String,String> filterMap = new HashMap<String, String>();
         filterMap.put("/","anon");
         filterMap.put("/login.html","anon");
-        //filterMap.put("/index.html","anon");
+        filterMap.put("/index.html","user");
         filterMap.put("/regist.html","anon");
         filterMap.put("/user/login","anon");
         filterMap.put("/user/regist","anon");
