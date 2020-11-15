@@ -20,6 +20,23 @@
 
     <dependencies>
 
+        <!-- springboot缓存支持 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <!-- 第三方缓存 -->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+        <!-- shiro对ehcache缓存支持 -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
         <!-- thmeleaf对shiro方言支持 -->
         <dependency>
             <groupId>com.github.theborakompanioni</groupId>
